@@ -32,7 +32,7 @@ class HomePageState extends State<HomePage> {
   }
 
   void initState() {
-    _getContactPermission();
+   // _getContactPermission();
   super.initState();
   }
 
@@ -106,7 +106,9 @@ void _handleInvalidPermissions(PermissionStatus permissionStatus) {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Row(
+          title:
+          FittedBox(
+            child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
 
@@ -124,6 +126,7 @@ void _handleInvalidPermissions(PermissionStatus permissionStatus) {
               ),
             ],
           )
+        ),
         ),
         body: Center(
           child: FutureBuilder(
