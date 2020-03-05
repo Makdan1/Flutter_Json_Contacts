@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uche_contacts/listStateAndLGA.dart';
 import 'home.dart';
 void main() => runApp(new MyApp());
 class MyApp extends StatelessWidget {
@@ -6,7 +7,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: ListOfState(),
+    routes: <String,WidgetBuilder>{
+      "/HomePage": (BuildContext context) => new HomePage(),
+    },
     );
   }
 }

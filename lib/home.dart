@@ -37,7 +37,7 @@ class HomePageState extends State<HomePage> {
   }
 
 Future<String> loadFromAssets() async {
-  return await rootBundle.loadString('json_data/people.json');
+  return await rootBundle.loadString('json_data/abanorth.json');
 }
   Future<PermissionStatus> _getContactPermission() async {
 
@@ -71,33 +71,39 @@ void _handleInvalidPermissions(PermissionStatus permissionStatus) {
 }
 
    loop() async {
-     color = Colors.white;
-  String jsonString = await loadFromAssets();
-  List decoded = json.decode(jsonString);
-  print(decoded);
-  int counter = 0;
-  for(int i=0;i<decoded.length;i++) {
-    var word = decoded.get(i);
-    counter = counter+1;
-  print(decoded.get(i)['Number']);
-  contact.givenName = word['First Name'];
-  contact.middleName = word['Last Name'];
-  contact.phones = [Item(label: "mobile", value: word['Number'])];
-  address.city = word['LGA'];
-  address.region = word['State'];
-  contact.suffix = word['Gender'];
-  contact.postalAddresses = [address];
-  Contacts.addContact(contact);
+     try {
+       color = Colors.white;
+       String jsonString = await loadFromAssets();
+       List decoded = json.decode(jsonString);
+       print(decoded);
+       int counter = 0;
+       for (int i = 0; i < decoded.length; i++) {
+         var word = decoded.get(i);
+         counter = counter + 1;
+         print(decoded.get(i)['Number']);
+         contact.givenName = word['First Name'];
+         contact.middleName = word['Last Name'];
+         contact.phones = [Item(label: "mobile", value: word['Number'])];
+         address.city = word['LGA'];
+         address.region = word['State'];
+         contact.suffix = word['Gender'];
+         contact.postalAddresses = [address];
+         Contacts.addContact(contact);
 
-  if(counter == decoded.length){
-    _scaffoldKey.currentState.hideCurrentSnackBar();
-    Fluttertoast.showToast(msg: 'All contact saved to your phone');
-    loopCompleted = 1;
-    color = Colors.blue;
-    Navigator.pop(context);
-  }
-  }}
 
+         if (counter == decoded.length) {
+           _scaffoldKey.currentState.hideCurrentSnackBar();
+           Fluttertoast.showToast(msg: 'All contact saved to your phone');
+           loopCompleted = 1;
+           color = Colors.blue;
+           Navigator.pop(context);
+         }
+       }
+     }
+     catch (e) {
+       print(e);
+     }
+   }
 
 @override
   Widget build(BuildContext context) {
@@ -106,7 +112,8 @@ void _handleInvalidPermissions(PermissionStatus permissionStatus) {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Row(
+          title: FittedBox(
+            child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
 
@@ -125,10 +132,11 @@ void _handleInvalidPermissions(PermissionStatus permissionStatus) {
             ],
           )
         ),
+        ),
         body: Center(
           child: FutureBuilder(
             future: DefaultAssetBundle.of(context)
-                .loadString('json_data/people.json'),
+                .loadString('json_data/abanorth.json'),
             builder: (context, snapshot) {
               //decode JSON
               var mydata = json.decode(snapshot.data.toString());
